@@ -7,7 +7,7 @@
 
 
 int buffer_map[64];
-
+int buffer_map2[64];
 //0 준비
 //1 게임 플레이
 //2 레벨클리어
@@ -54,8 +54,10 @@ void move_player(char cmd)
 		case 4:
 			if(player_inven ==1) {
 				printf("미션클리어 \r\n");
-				nFSM = 2;
+				nFSM = 3;
+				map_drawAll(buffer_map2);
 			}
+			
 			else {
 				player_ypos = old_ypos;
 				player_xpos = old_xpos;
@@ -65,6 +67,7 @@ void move_player(char cmd)
 		case 5:
 			printf("키를 얻었습니다. \r\n");
 			player_inven = 1;
+			
 
 			break;
 
@@ -74,5 +77,64 @@ void move_player(char cmd)
 
 }
 
-#endif
+void move_player2(char cmd)
+{
+	int old_xpos = player_xpos;
+	int old_ypos = player_ypos;
 
+	switch(cmd)
+	{
+		case 'i':
+			player_ypos -=1;
+			break;
+		case 'j':
+			player_xpos -=1;
+			break;
+		case 'k':
+			player_xpos += 1;
+			break;
+		case 'm':
+			player_ypos += 1;
+			break;
+	}
+
+	switch(buffer_map2[ player_xpos + player_ypos*8 ] ) {
+
+		case 0: //공간
+			break;
+		case 1: //벽
+			player_ypos = old_ypos;
+			player_xpos = old_xpos;
+			break;
+		case 2: //문 
+			printf("미션 클리어 \r\n");
+			nFSM = 2;
+			break;
+		case 4:
+			if(player_inven ==1) {
+				printf("미션클리어 \r\n");
+				nFSM = 3;
+				map_drawAll(buffer_map2);
+			}
+			
+			else {
+				player_ypos = old_ypos;
+				player_xpos = old_xpos;
+
+			}
+			break;
+		case 5:
+			printf("키를 얻었습니다. \r\n");
+			player_inven = 1;
+			
+
+			break;
+
+	}
+
+	buffer_map2[ player_xpos + player_ypos*8 ] = 3;
+
+}
+
+
+#endif

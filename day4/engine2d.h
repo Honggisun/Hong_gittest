@@ -37,15 +37,31 @@ void map_printCell(int rawdata)
 {
 	switch(rawdata) {
 		case 0: //공터 
+			setColor(0,42);
 			printf(" ");
 			break;
 		case 1: //벽
+			setColor(0,47);
 			printf("#");
 			break;
 		case 2: //문 
+			setColor(0,44);
 			printf("M");
 			break;
+		case 3: //캐릭터
+			setColor(0,41);
+			printf("A");
+			break;
+		case 4: // 잠긴문 
+			setColor(0,44);
+			printf("m");
+			break;
+		case 5: 
+			setColor(35,0);
+			printf("K");
+			break;
 		default:
+			setColor(0,0);
 			printf(" ");
 			break;
 	}
@@ -60,6 +76,7 @@ void map_drawAll(int *pMap)
 		for(ix=0;ix<8;ix++) {
 			map_printCell(pMap[ix+iy*8]);
 		}
+		setColor(0,0);
 		printf("\r\n");
 	}
 }

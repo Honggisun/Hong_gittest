@@ -17,10 +17,21 @@ int world_map[] = {
 	1,0,0,0,0,0,0,1,
 	1,0,0,1,0,0,0,1,
 	1,0,0,1,0,0,0,1,
-	1,0,0,1,0,0,0,1,
-	4,0,0,0,5,0,0,1,
+	1,0,5,1,0,0,0,1,
+	4,0,0,0,0,0,0,1,
 	1,0,0,0,0,0,0,1,
 	1,1,1,1,1,1,1,1
+};
+
+int world_map2[] = {
+	1,1,1,1,1,1,1,1,
+	1,0,0,0,0,0,0,1,
+	1,0,0,0,0,0,0,1,
+	1,0,0,0,0,0,0,1,
+	1,0,5,0,1,0,0,1,
+	1,0,0,0,1,0,0,1,
+	1,0,0,0,1,0,0,1,
+	1,4,1,1,1,1,1,1
 };
 
 int game_version = 1;
@@ -45,13 +56,18 @@ int main()
 				break;
 			case 2:
 				break;
-
+			case 3:
+				printf("명령을 선택하세요,\r\n \
+						i(up),j(left),k(right),\r\n \
+						m(down),s(show map),x(exit)\r\n");
+				break;
+		
 		}
 
 		//버퍼초기화
 		for(int i=0;i<64;i++) {
 			buffer_map[i] = world_map[i];
-		}
+				}
 
 		scanf("%c",&cmd);
 		getchar();
@@ -83,11 +99,26 @@ int main()
 					break;
 			}
 		}
-		else if(nFSM == 2) {
+		for(int i=0;i<64;i++) {
+			buffer_map2[i] = world_map2[i];
+			}
+			if(nFSM == 3 ) { //게임플레이 중일때..
+			move_player2(cmd);
+			switch(cmd) {
+				case 's':
+					map_drawAll(buffer_map2);
+					break;
+				case 'x':
+					bLoop = 0;
+					printf("bye bye~\r\n"); 
+					break;
+			}
+		}
+else if(nFSM == 2) {
 			nFSM = 0;
 
 		}
-
+		
 	}
 
 
