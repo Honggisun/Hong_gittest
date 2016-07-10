@@ -17,7 +17,7 @@ double acc_tick,last_tick;
 
 double rock_acc_tick;
 int rock_pos_x,rock_pos_y;
-int rock_pos_table[8] = { 1,3,2,3,4,5,7,3};
+int rock_pos_table[16] = {1,3,4,};
 int rock_cur_table_index = 0;
 int bLoop = 1;
 
@@ -51,9 +51,9 @@ void rg_PlayGame(double delta_tick)
 			}
 
 			//바위 움직이기 
-			rock_acc_tick += delta_tick;
+		rock_acc_tick += delta_tick;
 
-			if(rock_acc_tick > 0.5) {
+			if(rock_acc_tick > 0.1) {
 				rock_acc_tick = 0;
 				rock_pos_y += 1;
 				//화면끝도달...
@@ -65,15 +65,17 @@ void rg_PlayGame(double delta_tick)
 
 				}
 			}
-
 			//게임로직 (판정)
 			if(rock_pos_y == car_posy &&
 					rock_pos_x == car_posx)
 			{
-				bLoop = 0;
+				bLoop = 1;
+				nFSM = 1;
+
 				//drawGame(screen_buffer);
 				printf("game over\n");
-			}
+				
+			}   
 
 			//버퍼초기화 
 			for(int i=0;i<64;i++) {
@@ -97,6 +99,8 @@ void rg_PlayGame(double delta_tick)
 
 void rg_apply_mainTitle()
 {
+
+	
 	switch(nStep) {
 	
 		case 0:
