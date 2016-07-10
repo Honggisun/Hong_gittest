@@ -11,16 +11,30 @@ int main()
 {
 	_S_AREA town = {
 		"twon",
-		NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+		"dungeon-1",NULL,NULL,NULL,NULL,NULL,NULL,NULL
 	};
 	_S_AREA dungeon_1 = {
 		"dungeon-1",
 		NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 	};
+	_S_AREA dungeon_2 = {
+		"dungeon-2",
+		NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+	};
+	_S_AREA dungeon_3 = {
+		"dungeon-3",
+		NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+	};
 	
 	town.node[0] = &dungeon_1;
 	dungeon_1.node[0] = &town;
+
+	dungeon_1.node[0] = &dungeon_2;
+	dungeon_2.node[0] = &dungeon_1;
 	
+	dungeon_2.node[0] = &dungeon_3;
+	dungeon_3.node[0] = &dungeon_2;
+
 	_S_AREA *pCurrentArea = &town;
 
 	int bLoop = 1;
@@ -31,10 +45,12 @@ int main()
 
 		if(!strcmp(pTemp,"look")) {
 			printf("당신은 %s 에 서 있습니다. \r\n",pCurrentArea->m_szName);
-		}
+
+			}
 		else if( !strcmp(pTemp,"move") ) {
 			char *pszArea = strtok(NULL,"");
 			printf("당신은 %s 으로 이동합니다. \r\n",pszArea);
+
 			for(int i=0;i<8;i++) {
 				_S_AREA *pNode = pCurrentArea->node[i];
 				if(pNode == NULL) break;
