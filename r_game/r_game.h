@@ -12,17 +12,22 @@ void drawGame(int mx,int my, char *pBuf)
 		for(x=0;x<my;x++) {
 			switch( pBuf[mx*y+x]) {
 				case 0:
-				setColor(0,43);
+				setColor(0,47);
 					putchar('.');
 					break;
 				case 1:
 				setColor(34,47);
-					putchar('#');
+					putchar('B');
 					break;
 				case 2:
 				setColor(30,41);
-					putchar('A');
+					putchar('P');
 					break;
+				case 3:
+					setColor(34,43);
+					putchar('*');
+					break;
+
 			}
 					setColor(0,0);
 	
