@@ -88,13 +88,34 @@ int main()
 			for(int ix=0;ix<MapObject.m_header.m_nWidth;ix++ ) {
 				MapObject.m_pBuf[ypos * MapObject.m_header.m_nHeight + ix ] = tile_index;
 			}
-/*			}
-		else if(!strcmp(pTemp."save")) {
-			//save filename	
 		}
+		/*else if(!strcmp(pTemp."save")) {
+			//save filename	
+			char filename[20];
+			FILE *fp1, *fp2;
+			while(2)
+			{
+			fprintf("%s",filename);
+			fp1=fopen(filename,"r");
+			if(fp1==NULL)
+			printf("파일 저장 했다.");
+			else
+			break;
+			}
+		}*/
 		else if(!strcmp(pTemp,"load")) {
 			//load filename
-		}*/
+			char filename[20];
+			FILE *fp1, *fp2;
+			while(1)
+			{
+				scanf("%s",filename);
+				fp1=fopen(filename,"r");
+				if(fp1==NULL)
+					printf("해당 파일이 없다.");
+				else
+					break;
+			}
 		}
 	}	
 	return 0;
