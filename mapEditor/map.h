@@ -12,7 +12,7 @@ typedef struct {
 	char *m_pBuf;
 }_S_MAP_OBJECT;
 
-extern char Default_Tilepalette[];
+extern char Default_Tilepalete[];
 
 void map_init(_S_MAP_OBJECT *pObj);
 int map_load(_S_MAP_OBJECT *pObj,char *filename);
@@ -25,5 +25,6 @@ void map_PutTile(_S_MAP_OBJECT *pObj, int x,int y,int nTileIndex);
 void map_drawTile(_S_MAP_OBJECT *pObj,int posx,int posy,_S_MAP_OBJECT *pTarget);
 void map_drawTile_mirror(_S_MAP_OBJECT *pObj,int posx,int posy,_S_MAP_OBJECT *pTarget);
 void map_drawTile_mirror_v(_S_MAP_OBJECT *pObj,int posx,int posy,_S_MAP_OBJECT *pTarget);
+void map_drawTile_trn(_S_MAP_OBJECT *pObj,int posx,int posy,_S_MAP_OBJECT *pTarget);
 
 #endif
