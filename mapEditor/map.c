@@ -23,6 +23,15 @@ char Default_Tilepalete[] = {
 void map_init(_S_MAP_OBJECT *pObj)
 {
 	pObj->m_pBuf = NULL;
+	pObj->fpLoad = map_load;
+	pObj->fpSave = map_save;
+	pObj->fpDump = map_dump;
+	pObj->fpNew = map_new;
+	pObj->fpPutTile = map_PutTile;
+	pObj->fpDrawTile = map_drawTile;
+	pObj->fpDrawTile_trn = map_drawTile_trn;
+	pObj->fpDrawTile_mirror_v = map_drawTile_mirror_v;
+	pObj->fpDrawTile_mirror_h = map_drawTile_mirror_h;
 }
 
 void map_dump(_S_MAP_OBJECT *pObj,char *pTile_pal)
@@ -60,11 +69,12 @@ void map_new(_S_MAP_OBJECT *pObj,int nWidth,int nHeight)
 	
 
 }
-//클리핑처리
+
 void map_PutTile(_S_MAP_OBJECT *pObj, int x,int y,int nTileIndex)
 {
-	if(x >= 0 && y >= 0) {
-		if(x < pObj->m_header.m_nWidth && y <pObj->m_header.m_nHeight) {
+	//클리핑 처리 
+	if(x >= 0 && y >=0) {
+		if(x < pObj->m_header.m_nWidth && y < pObj->m_header.m_nHeight) {
 			pObj->m_pBuf[ pObj->m_header.m_nWidth * y + x  ] = nTileIndex;
 		}
 	}
