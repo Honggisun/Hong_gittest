@@ -10,35 +10,38 @@
 #include "../engine/engine2d.h"
 #include "../mapEditor/map.h"
 
-#include "plane.h"
+#include "Targetplane.h"
 
-void Plane_init(_S_Plane *pObj,_S_MAP_OBJECT *pBody,int x,int y)
+void Target_Plane_init(_Target_S_Plane *pObj,_S_MAP_OBJECT *pBody,int x,int y)
 {
 	pObj->m_pBody = pBody;
 	pObj->m_nYpos = y;
 	pObj->m_nXpos = x;
+
 }
-void Plane_Apply(_S_Plane *pObj,double deltaTick,char key_input)
+
+void Target_Plane_Apply(_Target_S_Plane *pObj,double deltaTick,char key_input)
 {
 	switch(key_input)
 	{
-		case 'a':
+		case 'b':
 		pObj->m_nXpos -= 1;
 		break;
-		case 'd':
+		case 'm':
 		pObj->m_nXpos += 1;
 		break;
-		case 'w':
+		case 'h':
 		pObj->m_nYpos -= 1;
 		break;
-		case 's':
+		case 'n':
 		pObj->m_nYpos += 1;
 		break;
 	}
 	
 }
 
-void Plane_Draw(_S_Plane *pObj, _S_MAP_OBJECT *pBuff)
+
+void Target_Plane_Draw(_Target_S_Plane *pObj, _S_MAP_OBJECT *pBuff)
 {
 	map_drawTile_trn(pObj->m_pBody,pObj->m_nXpos,pObj->m_nYpos,pBuff);
 }

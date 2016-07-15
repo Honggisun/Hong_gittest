@@ -18,5 +18,4 @@ void bullet_init(S_BULLET_OBJECT *pObj,double x,double y,double speed,_S_MAP_OBJ
 void bullet_apply(S_BULLET_OBJECT *pObj,double deltaTick);
 void bullet_draw(S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf);
 void bullet_fire(S_BULLET_OBJECT *pObj,int x,int y,double speed,double lifeLimit);
-void Target_bullet_fire(S_BULLET_OBJECT *pObj,int x,int y,double speed,double lifeLimit);
 #endif

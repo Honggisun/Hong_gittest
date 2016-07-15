@@ -11,7 +11,11 @@
 #include "../mapEditor/map.h"
 
 #include "plane.h"
+#include "Targetplane.h"
 #include "bullet.h"
+//#include "targetbullet.h"
+
+
 
 struct timespec work_timer;
 double acc_tick,last_tick;
@@ -24,7 +28,7 @@ _S_MAP_OBJECT gF22Bullet;
 _S_MAP_OBJECT gTarget;
 //게임오브잭트 선언 
 _S_Plane gPlayerPlane;
-_S_Plane gTargetPlane;
+_Target_S_Plane gTargetPlane;
 S_BULLET_OBJECT g_bullets[32];
 
 int main()
@@ -33,23 +37,22 @@ int main()
 	acc_tick=last_tick=0;
 	system("clear");
 	map_init(&gScreenBuffer);
-	map_new(&gScreenBuffer,60,20);
+	map_new(&gScreenBuffer,40,30);
 
 	map_init(&gBackBuffer);
-	map_new(&gBackBuffer,60,20);
+	map_new(&gBackBuffer,40,30);
 
 	map_init(&gF22Raptor);
-	map_load(&gF22Raptor,"plane3.dat");
+	map_load(&gF22Raptor,"plane5.dat");
 
 	map_init(&gF22Bullet);
-	map_load(&gF22Bullet,"bullet4.dat");
+	map_load(&gF22Bullet,"bullet5.dat");
 
 	map_init(&gTarget);
-	map_load(&gTarget,"target2.dat");
-
-
-	Plane_init(&gTargetPlane,&gTarget,50,5);
-	Plane_init(&gPlayerPlane,&gF22Raptor,5,5);
+	map_load(&gTarget,"target5.dat");
+	
+	Plane_init(&gPlayerPlane,&gF22Raptor,18,25);
+	Target_Plane_init(&gTargetPlane,&gTarget,18,3);
 
 	for(int i=0;i< sizeof(g_bullets)/sizeof(S_BULLET_OBJECT); i++)
 	{
@@ -84,24 +87,10 @@ int main()
 			}
 
 		
+
+	}
 		Plane_Apply(&gPlayerPlane,delta_tick,ch);
-
 	}
-	else if(ch == 'l') {
-		for(int i=0;i<sizeof(g_bullets)/sizeof(S_BULLET_OBJECT);i++) {
-			S_BULLET_OBJECT *pObj = &g_bullets[i];
-			if(pObj->m_nFSM == 0) { //슬립상태라면...
-				Target_bullet_fire(pObj,
-						gTargetPlane.m_nXpos,
-						gTargetPlane.m_nYpos,10,5.0);
-				break;
-			}
-		}
-
-	
-	Target_Plane_Apply(&gTargetPlane,delta_tick,ch);
-	}
-}
 
 
 for(int i=0;i<sizeof(g_bullets)/sizeof(S_BULLET_OBJECT);i++) {
@@ -119,17 +108,18 @@ if(acc_tick > 0.1) {
 
 	Plane_Draw(&gPlayerPlane,&gScreenBuffer); //player
 
-	Plane_Draw(&gTargetPlane,&gScreenBuffer); //target
+	Target_Plane_Draw(&gTargetPlane,&gScreenBuffer); //target
 	for(int i=0;i<sizeof(g_bullets)/sizeof(S_BULLET_OBJECT);i++) {
 		S_BULLET_OBJECT *pObj = &g_bullets[i];
 		bullet_draw(pObj,&gScreenBuffer);	
 	}
 
 
+	setColor(0,0);
 	gotoxy(0,0);
-	puts("------------------------------------------------------------\r");
+	puts(" \r\n");
 	map_dump(&gScreenBuffer,Default_Tilepalete);
-	puts("------------------------------------------------------------\r");
+	puts(" \r\n");
 
 	puts("move : w,a,s,d \r");
 	puts("quit : q \r");

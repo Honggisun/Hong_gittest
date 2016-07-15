@@ -9,7 +9,7 @@
 #include <math.h>
 
 #include "../engine/engine2d.h"
-#include "../mapEditor/map.h"
+#include "../mapeditor/map.h"
 #include "bullet.h"
 
 struct timespec work_timer;
@@ -28,7 +28,7 @@ int main()
 	for(int i=0;i<2;i++)
 	{
 		map_init(&gScreenBuffer[i]);
-		map_new(&gScreenBuffer[i],35,15);
+		map_new(&gScreenBuffer[i],80,40);
 	}
 	map_init(&gBulletModel);
 	map_load(&gBulletModel,"plasma.dat");
@@ -38,10 +38,14 @@ int main()
 
 	double target_x,target_y;
 	double center_x,center_y;
-	center_x = 14;
-	center_y = 7;
-	target_x = 14;
-	target_y = 3;
+	double moon_x,moon_y;
+	center_x = 40;
+	center_y = 20;
+	target_x = 40;
+	target_y = 25;
+	moon_x = 40;
+	moon_y = 15;
+
 	double angle = 0;
 	
 	while(bLoop) {
@@ -69,16 +73,27 @@ int main()
 		ty = (target_x - center_x) * sin(rad) + (target_y - center_y) * cos(rad);
 		tx += center_x;
 		ty += center_y;
-
+		/////moon
+		double bad = angle/180.0 * 3.141592;
+			angle += (delta_tick * 20);
+		double mx,my;
+		mx = (tx - moon_x) * cos(bad) - target_x(ty - moon_y) * sin(bad); //타겟 돌아가는 위치 문 위치
+		my = (tx - moon_x) * sin(bad) + target_y(ty - moon_y) * cos(bad);
+		mx += moon_x;
+		my += moon_y;
+		
 		//타이밍계산///////////////////////////////////
 		acc_tick += delta_tick;
-		if(acc_tick > 0.1) {
+		if(acc_tick > 0.01) {
 			//puts("tick...\r");
 			map_drawTile(&gScreenBuffer[0],0,0,&gScreenBuffer[1]);
 			map_PutTile(&gScreenBuffer[1],tx,ty,2);
+			map_PutTile(&gScreenBuffer[1],mx,my,3);
+		
 			map_PutTile(&gScreenBuffer[1],center_x,center_y,5);
 			map_PutTile(&gScreenBuffer[1],target_x,target_y,1);
-				
+			map_PutTile(&gScreenBuffer[1],moon_x,moon_y,6);
+					
 			gotoxy(0,0);
 			map_dump(&gScreenBuffer[1],Default_Tilepalete);
 			acc_tick = 0;

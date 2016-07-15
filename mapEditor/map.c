@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "map.h"
-
+#include "../engine/engine2d.h"
 
 char Default_Tilepalete[] = {
 	'.',//0

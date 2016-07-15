@@ -10,7 +10,6 @@ typedef struct {
 void Plane_init(_S_Plane *pObj,_S_MAP_OBJECT *pBody,int x,int y);
 void Plane_Apply(_S_Plane *pObj,double deltaTick,char key_input);
 void Plane_Draw(_S_Plane *pObj, _S_MAP_OBJECT *pBuff);
-void Target_Plane_Apply(_S_Plane *pObj,double deltaTick,char key_input);
 
 
 #endif

@@ -12,7 +12,7 @@
 
 #include "bullet.h"
 
-void bullet_init(S_BULLET_OBJECT *pObj,
+void Target_bullet_init(TARGET_S_BULLET_OBJECT *pObj,
 double x,double y,double speed,
 _S_MAP_OBJECT *pBody)
 {
@@ -25,7 +25,7 @@ _S_MAP_OBJECT *pBody)
 
 }
 
-void bullet_apply(S_BULLET_OBJECT *pObj,double deltaTick)
+void Target_bullet_apply(TARGET_S_BULLET_OBJECT *pObj,double deltaTick)
 {
 	switch(pObj->m_nFSM) {
 		case 0:
@@ -47,7 +47,7 @@ void bullet_apply(S_BULLET_OBJECT *pObj,double deltaTick)
 	}
 }
 
-void bullet_draw(S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf)
+void Target_bullet_draw(TARGET_S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf)
 {
 	switch(pObj->m_nFSM) {
 		case 0:
@@ -60,7 +60,7 @@ void bullet_draw(S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf)
 			break;
 	}
 }
-void bullet_fire(S_BULLET_OBJECT *pObj,int x,int y,double speed,double lifeLimit)
+void Target_bullet_fire(TARGET_S_BULLET_OBJECT *pObj,int x,int y,double speed,double lifeLimit)
 {
 	pObj->m_nStep = 0;
 	pObj->m_nFSM = 1;
