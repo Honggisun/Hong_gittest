@@ -13,7 +13,7 @@
 #include "plane.h"
 #include "Targetplane.h"
 #include "bullet.h"
-//#include "targetbullet.h"
+#include "targetbullet.h"
 
 
 
@@ -25,11 +25,15 @@ _S_MAP_OBJECT gScreenBuffer;
 _S_MAP_OBJECT gBackBuffer;
 _S_MAP_OBJECT gF22Raptor;
 _S_MAP_OBJECT gF22Bullet;
+_S_MAP_OBJECT gF22Bullet2;
 _S_MAP_OBJECT gTarget;
+
 //게임오브잭트 선언 
 _S_Plane gPlayerPlane;
 _Target_S_Plane gTargetPlane;
 S_BULLET_OBJECT g_bullets[32];
+TARGET_S_BULLET_OBJECT g_bullets2[32];
+
 
 int main()
 {
@@ -47,6 +51,10 @@ int main()
 
 	map_init(&gF22Bullet);
 	map_load(&gF22Bullet,"bullet5.dat");
+	
+	map_init(&gF22Bullet2);
+	map_load(&gF22Bullet2,"bullet5.dat");
+
 
 	map_init(&gTarget);
 	map_load(&gTarget,"target5.dat");
@@ -58,6 +66,11 @@ int main()
 	{
 		bullet_init(&g_bullets[i],0,0,0,&gF22Bullet);
 	}
+	for(int i=0;i< sizeof(g_bullets2)/sizeof(TARGET_S_BULLET_OBJECT); i++)
+	{
+		Target_bullet_init(&g_bullets2[i],0,0,0,&gF22Bullet2);
+	}
+
 
 	while(bLoop) {
 		//타이밍처리 
@@ -85,18 +98,36 @@ int main()
 					break;
 				}
 			}
+			if(ch == 'l') {
+				for(int i=0;i<sizeof(g_bullets2)/sizeof(TARGET_S_BULLET_OBJECT);i++) {
+					TARGET_S_BULLET_OBJECT *pObj = &g_bullets2[i];
+					if(pObj->m_nFSM == 0) { //슬립상태라면...
+						Target_bullet_fire(pObj,
+								gTargetPlane.m_nXpos,
+								gTargetPlane.m_nYpos,10,5.0);
+						break;
+					}
+				}
 
-		
-
-	}
-		Plane_Apply(&gPlayerPlane,delta_tick,ch);
-	}
+			
 
 
+			
+			Plane_Apply(&gPlayerPlane,delta_tick,ch);
+
+			Target_Plane_Apply(&gTargetPlane,delta_tick,ch);
+			} 
+		}
+}
 for(int i=0;i<sizeof(g_bullets)/sizeof(S_BULLET_OBJECT);i++) {
 	S_BULLET_OBJECT *pObj = &g_bullets[i];
 	bullet_apply(pObj,delta_tick);
+	
+for(int i=0;i<sizeof(g_bullets2)/sizeof(TARGET_S_BULLET_OBJECT);i++) {
+	TARGET_S_BULLET_OBJECT *pObj = &g_bullets2[i];
+	Target_bullet_apply(pObj,delta_tick);
 }	
+}
 
 //타이밍 계산 
 acc_tick += delta_tick;
@@ -113,6 +144,11 @@ if(acc_tick > 0.1) {
 		S_BULLET_OBJECT *pObj = &g_bullets[i];
 		bullet_draw(pObj,&gScreenBuffer);	
 	}
+	for(int i=0;i<sizeof(g_bullets2)/sizeof(TARGET_S_BULLET_OBJECT);i++) {
+		TARGET_S_BULLET_OBJECT *pObj = &g_bullets2[i];
+		Target_bullet_draw(pObj,&gScreenBuffer);	
+	}
+
 
 
 	setColor(0,0);

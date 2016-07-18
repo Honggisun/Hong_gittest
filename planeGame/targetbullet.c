@@ -10,7 +10,7 @@
 #include "../engine/engine2d.h"
 #include "../mapEditor/map.h"
 
-#include "bullet.h"
+#include "targetbullet.h"
 
 void Target_bullet_init(TARGET_S_BULLET_OBJECT *pObj,
 double x,double y,double speed,
@@ -41,7 +41,7 @@ void Target_bullet_apply(TARGET_S_BULLET_OBJECT *pObj,double deltaTick)
 					pObj->m_nStep = 0;
 					pObj->m_nFSM = 0;
 				}
-				pObj->m_fYpos -= deltaTick *pObj->m_fSpeed; //총알 방향
+				pObj->m_fYpos += deltaTick *pObj->m_fSpeed; //총알 방향
 			}
 			break;
 	}

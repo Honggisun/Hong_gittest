@@ -1,52 +1,87 @@
 #include <stdio.h>
-#include <math.h>
 #include <stdlib.h>
+#include <time.h>
+#include <sys/time.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/select.h>
+#include <termios.h>
+#include <math.h>
+
 #include "../engine/engine2d.h"
 #include "../mapEditor/map.h"
+#include "bullet.h"
 
-//지정한 위치로 이동/////////////////////////////////////
+struct timespec work_timer;
+double acc_tick,last_tick;
+int bLoop = 1;
+
+_S_MAP_OBJECT gScreenBuffer[2];
+_S_MAP_OBJECT gBulletModel;
+S_BULLET_OBJECT gBulletObject;
 
 int main()
 {
-	_S_MAP_OBJECT ScreenBuf;
-	map_init(&ScreenBuf);
-	map_new(&ScreenBuf,35,17);
+	set_conio_terminal_mode();
+	acc_tick=last_tick=0;
 
-	system("clear");
-	gotoxy(0,0);
-	
-	double startx,starty;
-	double endx,endy;
-
-	startx = 14; starty = 8;
-	endx = 1; endy = 3;
-
-	map_PutTile(&ScreenBuf,(int)startx,(int)starty,1);
-	map_PutTile(&ScreenBuf,(int)endx,(int)endy,2);
-// 방향벡터 구하기/////////////////////////////////////////
-	double mx,my;
-	mx = startx; my = starty;
-
-	double vx = endx - startx;              //중요//
-	double vy = endy - starty;
-	double c = sqrt(vx*vx+vy*vy);
-
-	vx /= c;
-	vy /= c;
-///////////////////////////////////////////////////////////
-
-	//for(int i=0;i< 8;i++) {
-	while(1) {
-		mx += vx;
-		my += vy;
-		if( (int)mx == (int)endx && (int)my == (int)endy) {
-			break;
-		}
-		map_PutTile(&ScreenBuf,(int)mx,(int)my,5);
+	for(int i=0;i<2;i++)
+	{
+		map_init(&gScreenBuffer[i]);
+		map_new(&gScreenBuffer[i],35,15);
 	}
+	map_init(&gBulletModel);
+	map_load(&gBulletModel,"plasma.dat");
+	bullet_init(&gBulletObject,0,0,0,&gBulletModel);
 
+	system("clear");	
 
-	map_dump(&ScreenBuf,Default_Tilepalete);
+	while(bLoop) {
+		//타이밍처리/////////////////////////////////////
+		clock_gettime(CLOCK_MONOTONIC,&work_timer);
+		double cur_tick = work_timer.tv_sec + 
+			(double)(work_timer.tv_nsec * 1e-9);
+		double delta_tick = cur_tick - last_tick;
+		last_tick = cur_tick;
+		//실시간입력/////////////////////////////////////	
+		if(kbhit() != 0) {
+			char ch = getch();
+			if(ch == 'q') {
+				bLoop = 0;
+				puts("Good bye~ \r");
+			}
+
+		//백터값 구해서 일정한 속도로 대각선으로 날아가기
+			else if(ch == 'j') {
+				double vx,vy,c;
+				vx = 1.0;vy = 1.0;
+		//백터값 공식//////////////////////////////////
+				c = sqrt(vx*vx + vy*vy);
+				vx /= c; vy/=c;
+
+				bullet_fire(&gBulletObject,17,10,
+				2.0,vx,-vy,
+				10.0); //x,y,speed,대각선x,대각선y,limit
+			}
+		}
+		////////////////////////////////////////////////
+		
+		//apply 위치 ...////////////////////////////////
+		bullet_apply(&gBulletObject,delta_tick); 
+
+		//타이밍계산///////////////////////////////////
+		acc_tick += delta_tick;
+		if(acc_tick > 0.1) {
+			//puts("tick...\r");
+			map_drawTile(&gScreenBuffer[0],0,0,&gScreenBuffer[1]);
+			bullet_draw(&gBulletObject, &gScreenBuffer[1]);
+			gotoxy(0,0);
+			map_dump(&gScreenBuffer[1],Default_Tilepalete);
+			acc_tick = 0;
+		}
+	}
 
 	return 0;
 }
+
+
