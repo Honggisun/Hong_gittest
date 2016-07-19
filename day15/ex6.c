@@ -17,9 +17,10 @@
 
 struct timespec work_timer;
 double acc_tick,last_tick;
+
 int bLoop = 1;
 
-_S_MAP_OBJECT gScreenBuf[2];
+_S_MAP_OBJECT gScreenBuf[32];
 
 _S_MAP_OBJECT gPlaneModel;
 _S_MAP_OBJECT gAlienModel;
@@ -31,6 +32,8 @@ _S_MAP_OBJECT gBulletModel;
 _S_Plane gTestPlaneObject;
 _S_ALIEN_OBJECT gTestAlienObject[10];
 _S_BULLET_OBJECT gTestBulletObject[32];
+_S_BULLET_OBJECT gTestBulletObject2[32];
+
 
 int main()
 {
@@ -46,7 +49,7 @@ int main()
 
 
 	map_init(&gAlienModel);
-	map_load(&gAlienModel,"alien.dat");
+	map_load(&gAlienModel,"alien5.dat");
 
 	map_init(&gPlasmaModel);
 	map_load(&gPlasmaModel,"bullet5.dat");
@@ -55,15 +58,20 @@ int main()
 	map_load(&gBulletModel,"bullet5.dat");
 
 
-	Plane_init(&gTestPlaneObject,&gPlaneModel,17,10);
+	Plane_init(&gTestPlaneObject,&gPlaneModel,17,25);
+
 
 	gTestPlaneObject.m_nFSM = 1;
 
-	double TablePosition[] = {0,4.0,8.0,12.0,14.0,18.0,22.0,26.0,30.0};
+	double TablePosition[] = {0,3.0,6.0,9.0,12.0,15.0,18.0,21.0,24.0};
 
 	for(int i=0;i< sizeof(gTestBulletObject)/sizeof(_S_BULLET_OBJECT); i++)
 	{
 		bullet_init(&gTestBulletObject[i],0,0,0,&gBulletModel);
+	}
+		for(int i=0;i< 10; i++)
+	{
+		bullet_init(&gTestBulletObject2[i],0,0,0,&gPlasmaModel);
 	}
 	
 	
@@ -74,6 +82,7 @@ int main()
 		pObj->m_fXpos = TablePosition[i];
 		pObj->m_fYpos = 3;
 		pObj->m_nFSM = 1;
+		gTestAlienObject[i].m_pBullet = &gTestBulletObject2[i];
 	}
 
 
@@ -106,8 +115,11 @@ int main()
 
 				}
 			}
+		
 			gTestPlaneObject.pfApply(&gTestPlaneObject,delta_tick,ch);
 		}
+	
+		
 
 		for(int i=0;i<sizeof(gTestBulletObject)/sizeof(_S_BULLET_OBJECT);i++) {
 			_S_BULLET_OBJECT *pObj = &gTestBulletObject[i];
@@ -119,8 +131,12 @@ int main()
 			_S_ALIEN_OBJECT *pObj = &gTestAlienObject[i];
 			pObj->pfApply(pObj,delta_tick);		
 		}
+		for(int i=0;i<10;i++) {
+			gTestBulletObject2[i].pfApply(&gTestBulletObject2[i],delta_tick);
+		}
 
 
+	
 
 		//타이밍 계산 
 		acc_tick += delta_tick;
@@ -141,6 +157,12 @@ int main()
 				_S_ALIEN_OBJECT *pObj = &gTestAlienObject[i];
 				pObj->pfDraw(pObj,&gScreenBuf[1]);
 			}
+			for(int i=0;i<4;i++) {
+
+				_S_BULLET_OBJECT *pObj = &gTestBulletObject2[i];
+				pObj->pfDraw(pObj,&gScreenBuf[1]);
+			}
+
 
 			map_dump(&gScreenBuf[1],Default_Tilepalete);
 			acc_tick = 0;

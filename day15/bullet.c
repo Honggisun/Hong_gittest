@@ -71,8 +71,8 @@ _S_MAP_OBJECT *pBody)
 	pObj->m_nFSM = 0;
 	pObj->m_nStep = 0;
 	pObj->m_fSpeed = speed;
-	pObj->m_fXpos = x;
-	pObj->m_fYpos = y;
+	pObj->m_fXpos = 0;
+	pObj->m_fYpos = 0;
 	pObj->m_pBody = pBody;
 	pObj->m_fCenterX = 0 - (pBody->m_header.m_nWidth/2);//중심점
 	pObj->m_fCenterY = 0 - (pBody->m_header.m_nHeight/2);

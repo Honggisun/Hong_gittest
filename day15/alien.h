@@ -22,6 +22,6 @@ typedef struct _S_ALIEN_OBJECT {
 
 } _S_ALIEN_OBJECT;
 
-void alien_init(_S_ALIEN_OBJECT *pObj,_S_MAP_OBJECT *pBody);
+void alien_init(_S_ALIEN_OBJECT *pObj,_S_MAP_OBJECT *pBody,double x,double y);
 
 #endif

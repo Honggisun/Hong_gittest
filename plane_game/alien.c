@@ -15,7 +15,7 @@
 
 static void Apply(_S_ALIEN_OBJECT *pObj,double deltaTick)
 {
-	double speed = 10.0;
+	double speed = 1.0;
 
 	switch(pObj->m_nFSM) {
 
@@ -27,7 +27,7 @@ static void Apply(_S_ALIEN_OBJECT *pObj,double deltaTick)
 		case 2: //move right
 			pObj->m_fXpos += (deltaTick * speed);
 			if(pObj->m_fXpos > 34) {
-				pObj->m_fYpos +=1;
+				pObj->m_fYpos +=2;
 				pObj->m_nFSM = 3;
 				pObj->m_nStep = 0;
 
@@ -38,7 +38,7 @@ static void Apply(_S_ALIEN_OBJECT *pObj,double deltaTick)
 			if(pObj->m_pBullet != NULL) {
 				if(pObj->m_pBullet->m_nFSM == 0) {
 					pObj->m_pBullet->pfFire(pObj->m_pBullet,
-							pObj->m_fXpos,pObj->m_fYpos,5.0,
+							pObj->m_fXpos,pObj->m_fYpos,10.0,
 							0,1.0,3.0);
 				}
 			}
@@ -47,7 +47,7 @@ static void Apply(_S_ALIEN_OBJECT *pObj,double deltaTick)
 		case 3: //move left
 			pObj->m_fXpos -=(deltaTick * speed);
 			if(pObj->m_fXpos <= 0 ) {
-				pObj->m_fYpos +=1;
+				pObj->m_fYpos +=2;
 				pObj->m_nStep = 0;
 				pObj->m_nFSM = 2;	
 				if(pObj->m_fYpos > 15) {
@@ -58,7 +58,7 @@ static void Apply(_S_ALIEN_OBJECT *pObj,double deltaTick)
 			if(pObj->m_pBullet != NULL) {
 				if(pObj->m_pBullet->m_nFSM == 0) {
 					pObj->m_pBullet->pfFire(pObj->m_pBullet,
-							pObj->m_fXpos,pObj->m_fYpos,5.0,
+							pObj->m_fXpos,pObj->m_fYpos,10.0,
 							0,1.0,3.0);
 				}
 			}
@@ -85,13 +85,13 @@ static void Draw(_S_ALIEN_OBJECT *pObj, _S_MAP_OBJECT *pBuff)
 	}
 }
 
-void alien_init(_S_ALIEN_OBJECT *pObj,_S_MAP_OBJECT *pBody)
+void alien_init(_S_ALIEN_OBJECT *pObj,_S_MAP_OBJECT *pBody,double x,double y)
 {
 	pObj->m_nFSM = 0;
 	pObj->m_nStep = 0;
 	pObj->m_pBody = pBody;
-	pObj->m_fYpos = 0;
-	pObj->m_fXpos = 0;
+	pObj->m_fYpos = y;
+	pObj->m_fXpos = x;
 	pObj->m_fSpeed = 0;
 
 	pObj->m_fCenterX = 0 - (pBody->m_header.m_nWidth/2);

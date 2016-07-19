@@ -21,12 +21,10 @@ int bLoop = 1;
 _S_MAP_OBJECT gScreenBuf[32];
 
 _S_MAP_OBJECT gAlienModel;
-_S_MAP_OBJECT gAlienModel2;
 
 _S_MAP_OBJECT gPlasmaModel;
 
 _S_ALIEN_OBJECT gTestAlienObject;
-_S_ALIEN_OBJECT gTestAlienObject2;
 _S_BULLET_OBJECT gTestBulletObject;
 
 int main()
@@ -40,17 +38,12 @@ int main()
 
 	map_init(&gAlienModel);
 	map_load(&gAlienModel,"alien.dat");
-
-	map_init(&gAlienModel2);
-	map_load(&gAlienModel2,"alien.dat");
-
 	map_init(&gPlasmaModel);
 	map_load(&gPlasmaModel,"plasma.dat");
 
 
 
 	alien_init(&gTestAlienObject,&gAlienModel);
-	alien_init(&gTestAlienObject2,&gAlienModel2);
 	bullet_init(&gTestBulletObject,0,0,0,&gPlasmaModel);
 
 
@@ -60,11 +53,7 @@ int main()
 	gTestAlienObject.m_fYpos = 2;
 	gTestAlienObject.m_nFSM = 1;
 
-	gTestAlienObject2.m_fXpos = 2;
-	gTestAlienObject2.m_fYpos = 2;
-	gTestAlienObject2.m_nFSM = 1;
-	
-	system("clear");
+		system("clear");
 	
 	set_conio_terminal_mode();
 	acc_tick=last_tick=0;
@@ -87,7 +76,6 @@ int main()
 		}
 
 		gTestAlienObject.pfApply(&gTestAlienObject,delta_tick);
-		gTestAlienObject2.pfApply(&gTestAlienObject2,delta_tick);
 		gTestBulletObject.pfApply(&gTestBulletObject,delta_tick);	
 		//타이밍 계산 
 		acc_tick += delta_tick;
@@ -96,7 +84,6 @@ int main()
 			map_drawTile(&gScreenBuf[0],0,0,&gScreenBuf[1]);
 	
 			gTestAlienObject.pfDraw(&gTestAlienObject,&gScreenBuf[1]);
-			gTestAlienObject2.pfDraw(&gTestAlienObject2,&gScreenBuf[1]);
 			gTestBulletObject.pfDraw(&gTestBulletObject,&gScreenBuf[1]);	
 			
 			map_dump(&gScreenBuf[1],Default_Tilepalete);
