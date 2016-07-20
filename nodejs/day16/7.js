@@ -1,7 +1,7 @@
 /**
- * Created by KICT-10 on 2016-07-19.
+ * Created by KICT-12 on 2016-07-19.
  */
-let array_test = ['banana',"orange","apple"];
+let array_test = ['banana',"ornage","apple"];
 
 console.log(array_test);
 
@@ -9,14 +9,14 @@ array_test.push('grape');
 
 console.log(array_test);
 
-console.log('추출 :' + array_test.shift());
+console.log( '추출 : ' + array_test.shift());
 
 console.log(array_test);
 
-array_test.unshift('raspberry');
+array_test.unshift('raspberry')
 
 console.log(array_test);
 
-console.log('추출:' + array_test.pop());
-
+console.log( '추출 : ' +array_test.pop());
 console.log(array_test);
+

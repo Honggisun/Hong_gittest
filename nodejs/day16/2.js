@@ -1,9 +1,9 @@
 /**
- * Created by KICT-10 on 2016-07-19.
+ * Created by KICT-12 on 2016-07-19.
  */
 
 {
-    //var a = 2;
+    //var a =2;
     let a=2;
 }
 

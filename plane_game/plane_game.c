@@ -157,7 +157,7 @@ int main()
 	
 			double dist = getDistance(&gTestBulletObject2[i],&gTestPlaneObject);
 
-			if(dist < 1.0) {
+			if(dist < 0.5) {
 				gTestBulletObject2[i].m_nFSM = 0;
 				gTestPlaneObject.m_nFSM = 0;
 			}

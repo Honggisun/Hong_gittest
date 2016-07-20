@@ -1,5 +1,5 @@
 /**
- * Created by KICT-10 on 2016-07-19.
+ * Created by KICT-12 on 2016-07-19.
  */
 
 const net = require('net');
@@ -10,16 +10,20 @@ const PORT = 8080;
 let socket = new net.Socket();
 
 socket.connect(PORT,ip,()=>{
-   console.log("connect to :" + ip + PORT);
+    console.log("connect to: " + ip + PORT);
     socket.write("여보세요");
+
 });
 
 socket.on('data',(evt)=>{
+    console.log(String(evt));
+    //socket.end("bye~");
+    socket.destroy();
 
 });
 socket.on('error',(evt)=>{
 
 });
-socket.on('close',()=> {
+socket.on('close',()=>{
 
 });

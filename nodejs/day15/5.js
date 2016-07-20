@@ -1,17 +1,18 @@
 /**
- * Created by KICT-10 on 2016-07-18.
+ * Created by KICT-12 on 2016-07-18.
  */
 
 var select = "data"
 
-switch(select) {
+switch(select)
+{
     case "item":
-        console.log("u selet item")
+        console.log("u select item");
         break;
     case "data":
-        console.log("u selet data")
+        console.log("u select data");
         break;
     case "view":
-        console.log("u selet view")
+        console.log("u select view");
         break;
 }

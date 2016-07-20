@@ -1,5 +1,5 @@
 /**
- * Created by KICT-10 on 2016-07-18.
+ * Created by KICT-12 on 2016-07-18.
  */
 
 function sum(a,b) {

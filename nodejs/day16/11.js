@@ -1,32 +1,35 @@
 /**
- * Created by KICT-10 on 2016-07-19.
+ * Created by KICT-12 on 2016-07-19.
  */
 
 let array_test = [
     {
-        name : 'hi',
-        hp : 52
+        name : 'soek',
+        hp:52
     },
     {
-        name: 'hello',
-        hp: 27
+        name : 'mongu',
+        hp : 27
     },
     {
-        name : 'world',
-        hp :37
+        name : 'trol',
+        hp : 47
     },
     {
-        name : 'gisun',
-        hp : 100
+        name : 'orc',
+        hp : 35
+    },
+    {
+        name : 'witch',
+        hp : 29
     }
-]
+];
+
 console.log(array_test);
 
-array_test.sort();
-
-array_test.sort((left,right) => {
-  //  return left.hp - right.hp;
+array_test.sort( (left,right)=> {
+    //return left.hp - right.hp;
     return right.hp - left.hp;
-})
-console.log('--------------------------------------');
+}  );
+console.log('============================');
 console.log(array_test);

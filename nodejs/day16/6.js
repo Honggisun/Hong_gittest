@@ -1,10 +1,11 @@
 /**
- * Created by KICT-10 on 2016-07-19.
+ * Created by KICT-12 on 2016-07-19.
  */
 
-let array_test = ["apple","banana","orange","apple"];
+let array_test = ["apple","banana","orange","apple","banana"];
 
-console.log(arra_test.index0f("apple"));
-console.log(arra_test.index0f("banana"));
-console.log(arra_test.index0f("orange"));
+console.log( array_test.indexOf("apple") )
+console.log( array_test.indexOf("banana") )
+console.log( array_test.indexOf("orange") )
 
+console.log( array_test.lastIndexOf("apple") )

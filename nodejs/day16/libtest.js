@@ -1,8 +1,8 @@
 /**
- * Created by KICT-10 on 2016-07-19.
+ * Created by KICT-12 on 2016-07-19.
  */
 
-function  add(x,y) {
+function add(x, y) {
     return x+y;
 }
 
