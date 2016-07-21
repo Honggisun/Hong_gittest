@@ -31,23 +31,27 @@ _S_MAP_OBJECT gBulletModel;
 
 _S_Plane gTestPlaneObject;
 _S_ALIEN_OBJECT gTestAlienObject[10];
-_S_BULLET_OBJECT gTestBulletObject[32];
-_S_BULLET_OBJECT gTestBulletObject2[32];
+_S_BULLET_OBJECT gTestBulletObject[10];
+_S_BULLET_OBJECT gTestBulletObject2[10];
 
-double getDistance(_S_BULLET_OBJECT *pBullet,_S_Plane *pAlien)
+void getDirection(_S_BULLET_OBJECT *pBullet,_S_Plane *pPlane,double *_vx,double *_vy)
 {
-
 	double bullet_pos_x = pBullet->m_fXpos;	 //총알 시작위치
 	double bullet_pos_y = pBullet->m_fYpos;	
 
-	double target_pos_x = pAlien->m_fXpos;
-	double target_pos_y = pAlien->m_fYpos;
+	double target_pos_x = pPlane->m_fXpos;
+	double target_pos_y = pPlane->m_fYpos;
 
 	double vx = target_pos_x - bullet_pos_x;
 	double vy = target_pos_y - bullet_pos_y;
 	double dist = sqrt(vx*vx+vy*vy);
+	vx /= dist;
+	vy /= dist;
+	
+	*_vx = vx;
+	*_vy = vy;
 
-	return dist;	
+
 }
 
 
@@ -56,7 +60,7 @@ int main()
 {
 
 	system("clear");
-	for(int i=0;i<10;i++)
+	for(int i=0;i<2;i++)
 	{
 		map_init(&gScreenBuf[i]);
 		map_new(&gScreenBuf[i],35,30);
@@ -80,7 +84,7 @@ int main()
 
 	gTestPlaneObject.m_nFSM = 1;
 
-	double TablePosition[] = {0,3.0,6.0,9.0,12.0,15.0,18.0,21.0,24.0};
+	double TablePosition[] = {0,3.0,6.0,9.0,12.0,15.0,18.0,21.0,24.0,27.0};
 
 	for(int i=0;i< sizeof(gTestBulletObject)/sizeof(_S_BULLET_OBJECT); i++)
 	{
@@ -100,6 +104,8 @@ int main()
 		pObj->m_fYpos = 3;
 		pObj->m_nFSM = 1;
 		gTestAlienObject[i].m_pBullet = &gTestBulletObject2[i];
+
+
 	}
 
 
@@ -124,9 +130,10 @@ int main()
 				for(int i=0;i<sizeof(gTestBulletObject)/sizeof(_S_BULLET_OBJECT);i++) {
 					_S_BULLET_OBJECT *pObj = &gTestBulletObject[i];
 					if(pObj->m_nFSM == 0) { //슬립상태라면...
+
 						pObj->pfFire(pObj,
 								gTestPlaneObject.m_fXpos,
-								gTestPlaneObject.m_fYpos,5,0,-2,10);
+								gTestPlaneObject.m_fYpos,5,0,-2,3);
 						break;
 					}
 
@@ -138,37 +145,78 @@ int main()
 	
 		
 
-		for(int i=0;i<sizeof(gTestBulletObject)/sizeof(_S_BULLET_OBJECT);i++) {
-			_S_BULLET_OBJECT *pObj = &gTestBulletObject[i];
-			pObj->pfApply(pObj,delta_tick);
 
 
-		}
+
+
+
+		
 		for(int i=0;i<10;i++) {
 			_S_ALIEN_OBJECT *pObj = &gTestAlienObject[i];
 			pObj->pfApply(pObj,delta_tick);		
+
 	
 		}
-		for(int i=0;i<10;i++) {
-			gTestBulletObject2[i].pfApply(&gTestBulletObject2[i],delta_tick);
-		
+		for(int i=0;i<4;i++) {
 
-		if(gTestBulletObject2[i].m_nFSM != 0)	{
+			if(gTestBulletObject2[i].m_nFSM != 0)	{
+				double bullet_pos_x = gTestBulletObject2[i].m_fXpos;	 //총알 시작위치
+				double bullet_pos_y = gTestBulletObject2[i].m_fYpos;	
+
+				double target_pos_x = gTestPlaneObject.m_fXpos;
+				double target_pos_y = gTestPlaneObject.m_fYpos;
+
+				double vx = target_pos_x - bullet_pos_x;
+				double vy = target_pos_y - bullet_pos_y;
 	
-			double dist = getDistance(&gTestBulletObject2[i],&gTestPlaneObject);
+				double dist = sqrt(vx*vx+vy*vy);
 
-			if(dist < 0.5) {
-				gTestBulletObject2[i].m_nFSM = 0;
-				gTestPlaneObject.m_nFSM = 0;
+
+				if(dist < 2.0) {
+					gTestBulletObject2[i].m_nFSM = 0;
+					gTestPlaneObject.m_nFSM = 0;
+					puts("-------------game over-------------");
+				}
 			}
+
 		}
 
-}
-	
+		for(int i=0;i<sizeof(gTestBulletObject)/sizeof(_S_BULLET_OBJECT); i++)
+
+			if(gTestBulletObject[i].m_nFSM !=0) {
+				double bullet_pos_x = gTestBulletObject[i].m_fXpos;	 //총알 시작위치
+				double bullet_pos_y = gTestBulletObject[i].m_fYpos;	
+
+				double target_pos_x = gTestAlienObject[i].m_fXpos;
+				double target_pos_y = gTestAlienObject[i].m_fYpos;
+
+				double vx = target_pos_x - bullet_pos_x;
+				double vy = target_pos_y - bullet_pos_y;
+
+				double dist = sqrt(vx*vx+vy*vy);
+
+				if(dist < 3.0) {
+					gTestBulletObject[i].m_nFSM = 0;
+					gTestAlienObject[i].m_nFSM = 0;
+				}
+			}
+
+
+
+
+		for(int i=0;i<sizeof(gTestBulletObject)/sizeof(_S_BULLET_OBJECT);i++) {
+			gTestBulletObject[i].pfApply(&gTestBulletObject[i],delta_tick);
+		}
+		for(int i=0;i<4;i++) {
+			gTestBulletObject2[i].pfApply(&gTestBulletObject2[i],delta_tick);
+		}
+
+
+
 
 		//타이밍 계산 
 		acc_tick += delta_tick;
-		if(acc_tick > 0.1) {
+		if(acc_tick > 0.01) {
 			gotoxy(0,0);
 			map_drawTile(&gScreenBuf[0],0,0,&gScreenBuf[1]);
 			gTestPlaneObject.pfDraw(&gTestPlaneObject,&gScreenBuf[1]);

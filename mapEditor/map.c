@@ -52,6 +52,7 @@ void map_dump(_S_MAP_OBJECT *pObj,char *pTile_pal)
 	}
 }
 
+
 void map_new(_S_MAP_OBJECT *pObj,int nWidth,int nHeight)
 {
 	int nSize = nWidth*nHeight; 

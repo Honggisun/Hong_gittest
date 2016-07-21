@@ -74,8 +74,8 @@ _S_MAP_OBJECT *pBody)
 	pObj->m_fXpos = 0;
 	pObj->m_fYpos = 0;
 	pObj->m_pBody = pBody;
-	pObj->m_fCenterX = 0 - (pBody->m_header.m_nWidth/2);//중심점
-	pObj->m_fCenterY = 0 - (pBody->m_header.m_nHeight/2);
+	pObj->m_fCenterX = pObj->m_fXpos - (pBody->m_header.m_nWidth/2);//중심점
+	pObj->m_fCenterY = pObj->m_fYpos - (pBody->m_header.m_nHeight/2);
 	pObj->pfApply = bullet_apply;
 	pObj->pfDraw = bullet_draw;
 	pObj->pfFire = bullet_fire;
